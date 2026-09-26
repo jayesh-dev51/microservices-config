@@ -1,1 +1,29 @@
 
+server:
+  port: 8761
+  shutdown: graceful
+
+spring:
+  application:
+    name: service-registry
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 60000
+    renewal-percent-threshold: 0.85
+
+logging:
+  level:
+    com.serviceregistry: INFO
+    com.netflix.eureka: WARN
+    com.netflix.discovery: WARN
