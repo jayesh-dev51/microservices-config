@@ -1,1 +1,45 @@
 
+server:
+  port: 8081
+  shutdown: graceful
+
+spring:
+  application:
+    name: user-service
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+  datasource:
+    url: jdbc:postgresql://ep-cold-firefly-b4pvpcnf-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_ejUQX1MCAV6h
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: UserServiceHikariPool
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      keepalive-time: 120000
+      validation-timeout: 5000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+    show-sql: false
+
+logging:
+  level:
+    com.userservice: INFO
+    org.hibernate.SQL: WARN
+    com.zaxxer.hikari: INFO
