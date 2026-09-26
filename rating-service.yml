@@ -1,1 +1,55 @@
 
+server:
+  port: 8083
+  shutdown: graceful
+
+spring:
+  application:
+    name: rating-service
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+  datasource:
+    url: jdbc:postgresql://ep-polished-wind-b477kqpz-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: neondb_owner
+    password: npg_2PAWzXJH4cMo
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: RatingServiceHikariPool
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      keepalive-time: 120000
+      validation-timeout: 5000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+    show-sql: false
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 2000
+            readTimeout: 3000
+            loggerLevel: basic
+
+logging:
+  level:
+    com.ratingservice: INFO
+    com.ratingservice.client: DEBUG
+    org.hibernate.SQL: WARN
+    com.zaxxer.hikari: INFO
